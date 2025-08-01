@@ -28,6 +28,10 @@ export default {
       if (this.username === "admin" && this.password === "admin") {
         console.log("Inloggen succesvol");
         localStorage.setItem("loggedIn", "true");
+        console.log(
+          "loggedIn status opgeslagen in localStorage:",
+          localStorage.getItem("loggedIn")
+        );
         this.$emit("login"); // Verstuur een event naar de oudercomponent
       } else {
         this.error = "Ongeldige gebruikersnaam of wachtwoord.";
