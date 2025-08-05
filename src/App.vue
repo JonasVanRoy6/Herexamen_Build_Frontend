@@ -7,7 +7,7 @@ import CancelledOrders from "./components/CancelledOrders.vue";
 import ShippedOrders from "./components/ShippedOrders.vue";
 
 // Loginstatus en view states
-const isLoggedIn = ref(localStorage.getItem("loggedIn") === "true" || false);
+const isLoggedIn = ref(localStorage.getItem("loggedIn") === "true");
 const showStatusSelection = ref(false);
 const showOrders = ref(false);
 const showCancelledOrders = ref(false);
@@ -27,16 +27,41 @@ watch(isLoggedIn, (newValue) => {
   }
 });
 
+onMounted(() => {
+  if (isLoggedIn.value) {
+    console.log("Gebruiker is ingelogd. Navigeren naar statusselectiepagina.");
+    showStatusSelection.value = true;
+  } else {
+    console.log("Gebruiker is niet ingelogd. Navigeren naar inlogpagina.");
+    showStatusSelection.value = false;
+  }
+});
+
 onMounted(async () => {
+  if (!isLoggedIn.value) {
+    console.log("Gebruiker is niet ingelogd. Navigeren naar inlogpagina.");
+    return;
+  }
+
   try {
     console.log("Ophalen van orders gestart");
     const response = await fetch("http://localhost:5000/api/orders");
     if (!response.ok) throw new Error(`Status: ${response.status}`);
     orders.value = await response.json();
     console.log("Ophalen van orders voltooid:", orders.value);
+
+    // Filter de orders op basis van hun status
+    cancelledOrders.value = orders.value.filter(
+      (order) => order.status === "cancelled"
+    );
+    shippedOrders.value = orders.value.filter(
+      (order) => order.status === "shipped"
+    );
   } catch (err) {
     console.error("Fout bij ophalen van orders:", err);
     orders.value = [];
+    cancelledOrders.value = [];
+    shippedOrders.value = [];
   }
 });
 
@@ -117,6 +142,7 @@ function updateShippedOrders(order) {
     <!-- Statusselectiepagina -->
     <StatusSelection
       v-else-if="showStatusSelection"
+      @logout="handleLogout"
       @navigateToOrders="handleNavigateToOrders"
       @navigateToCancelledOrders="handleNavigateToCancelledOrders"
       @navigateToShippedOrders="handleNavigateToShippedOrders"
@@ -126,7 +152,6 @@ function updateShippedOrders(order) {
     <Orders
       v-else-if="showOrders"
       :orders="orders"
-      @logout="handleLogout"
       @goBack="handleGoBack"
       @updateShippedOrders="updateShippedOrders"
     />
