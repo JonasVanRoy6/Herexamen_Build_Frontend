@@ -7,13 +7,21 @@
   />
   <div>
     <h1>Verzonden Bestellingen</h1>
-    <button @click="goBack">Terug</button>
+    <div class="button-container">
+      <button @click="goBack" class="back-button">Terug</button>
+      <button @click="deleteAllShippedOrders" class="delete-button">
+        🗑️ Verwijder alles
+      </button>
+    </div>
 
     <ul>
       <li v-for="order in filteredOrders" :key="order._id">
         <!-- Klantnaam en adres -->
         <div @click="toggleOrderDetails(order._id)" class="order-header">
-          <p><strong>Bestelling ID:</strong> {{ order._id }}</p>
+          <p>
+            <strong>Datum:</strong> {{ new Date(order.date).toLocaleString() }}
+          </p>
+
           <p v-if="order.customer && order.customer.name">
             <strong>Klantnaam:</strong> {{ order.customer.name }}
           </p>
@@ -38,11 +46,10 @@
             </li>
           </ul>
           <p v-else>Geen smaken beschikbaar voor deze bestelling.</p>
-          <p><strong>Topping:</strong> {{ order.topping }}</p>
+          <p><strong>Topping:</strong> {{ order.topping || "geen" }}</p>
           <p><strong>Rietje:</strong> {{ order.straw }}</p>
-          <p>
-            <strong>Datum:</strong> {{ new Date(order.date).toLocaleString() }}
-          </p>
+          <p><strong>Bestelling ID:</strong> {{ order._id }}</p>
+          <p><strong>Prijs:</strong> €{{ order.price }}</p>
         </div>
       </li>
     </ul>
@@ -117,6 +124,32 @@ onMounted(async () => {
 const filteredOrders = computed(() => {
   return orders.value;
 });
+
+async function deleteAllShippedOrders() {
+  try {
+    const shippedOrderIds = orders.value.map((order) => order._id); // Gebruik orders.value in plaats van props.shippedOrders
+
+    for (const orderId of shippedOrderIds) {
+      const response = await fetch(
+        `http://localhost:5000/api/orders/${orderId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error(
+          `Fout bij het verwijderen van bestelling met ID ${orderId}`
+        );
+      }
+      console.log(`Bestelling met ID ${orderId} verwijderd`);
+    }
+
+    // Verwijder alle bestellingen uit de lijst in de frontend
+    orders.value = []; // Maak de orders.value-array leeg
+  } catch (error) {
+    console.error("Fout bij het verwijderen van de bestellingen:", error);
+  }
+}
 </script>
 
 <style scoped>
@@ -155,6 +188,43 @@ li {
   padding: 10px;
   background-color: #fff;
 }
+.button-container {
+  display: flex; /* Gebruik flexbox om de knoppen naast elkaar te plaatsen */
+  justify-content: space-between; /* Zorg ervoor dat de knoppen aan de uiteinden staan */
+  align-items: center; /* Zorg ervoor dat de knoppen verticaal gecentreerd zijn */
+  margin-bottom: 20px; /* Voeg wat ruimte onder de container toe */
+}
+
+.back-button {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 300px; /* Zorg ervoor dat de knop dezelfde breedte heeft als de andere knoppen */
+}
+
+/* Hover-effect voor beide knoppen */
+button:hover {
+  background-color: black;
+  color: white;
+}
 button {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
@@ -169,11 +239,6 @@ button {
   width: 200px; /* Zorg ervoor dat alle knoppen dezelfde breedte hebben */
   text-align: center;
 }
-/* Hover-effect voor de knoppen */
-button:hover {
-  background-color: black;
-  color: white; /* Donkerdere blauwe kleur bij hover */
-}
 hr {
   border: 1px solid #ccc;
 }
@@ -182,4 +247,3 @@ hr {
   color: #333;
 }
 </style>
-```

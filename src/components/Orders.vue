@@ -13,7 +13,10 @@
       <li v-for="order in filteredOrders" :key="order._id">
         <!-- Klantnaam en adres -->
         <div @click="toggleOrderDetails(order._id)" class="order-header">
-          <p><strong>Bestelling ID:</strong> {{ order._id }}</p>
+          <p>
+            <strong>Datum:</strong> {{ new Date(order.date).toLocaleString() }}
+          </p>
+
           <p v-if="order.customer && order.customer.name">
             <strong>Klantnaam:</strong> {{ order.customer.name }}
           </p>
@@ -38,11 +41,13 @@
             </li>
           </ul>
           <p v-else>Geen smaken beschikbaar voor deze bestelling.</p>
-          <p><strong>Topping:</strong> {{ order.topping }}</p>
+          <p><strong>Topping:</strong> {{ order.topping || "geen" }}</p>
           <p><strong>Rietje:</strong> {{ order.straw }}</p>
-          <p>
-            <strong>Datum:</strong> {{ new Date(order.date).toLocaleString() }}
-          </p>
+
+          <p><strong>Bestelling ID:</strong> {{ order._id }}</p>
+
+          <!-- Prijs toevoegen -->
+          <p><strong>Prijs:</strong> €{{ order.price }}</p>
           <button @click="markAsCancelled(order)">Annuleer</button>
           <button @click="markAsShipped(order)">Verzonden</button>
         </div>
@@ -246,3 +251,4 @@ hr {
   color: #333;
 }
 </style>
+`
