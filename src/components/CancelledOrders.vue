@@ -7,7 +7,12 @@
   />
   <div>
     <h1>Geannuleerde Bestellingen</h1>
-    <button @click="emit('goBack')">Terug</button>
+    <div class="button-container">
+      <button @click="goBack" class="back-button">Terug</button>
+      <button @click="deleteAllCancelledOrders" class="delete-button">
+        🗑️ Verwijder alles
+      </button>
+    </div>
 
     <ul>
       <li v-for="order in filteredCancelledOrders" :key="order._id">
@@ -115,6 +120,9 @@ function toggleOrderDetails(orderId) {
   }
 }
 
+function goBack() {
+  emit("goBack");
+}
 // Functie om een bestelling te verwijderen
 async function deleteOrder(orderId) {
   try {
@@ -138,6 +146,42 @@ async function deleteOrder(orderId) {
     console.error("Fout bij het verwijderen van de bestelling:", error);
   }
 }
+
+// Functie om alle geannuleerde bestellingen te verwijderen
+async function deleteAllCancelledOrders() {
+  try {
+    const cancelledOrderIds = props.cancelledOrders
+      .filter((order) => order.status === "cancelled")
+      .map((order) => order._id);
+
+    console.log("Te verwijderen IDs:", cancelledOrderIds); // Debugging
+
+    for (const orderId of cancelledOrderIds) {
+      const response = await fetch(
+        `http://localhost:5000/api/orders/${orderId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error(
+          `Fout bij het verwijderen van bestelling met ID ${orderId}`
+        );
+      }
+      console.log(`Bestelling met ID ${orderId} verwijderd`);
+
+      // Verwijder de bestelling direct uit de lijst in de frontend
+      const index = props.cancelledOrders.findIndex(
+        (order) => order._id === orderId
+      );
+      if (index !== -1) {
+        props.cancelledOrders.splice(index, 1);
+      }
+    }
+  } catch (error) {
+    console.error("Fout bij het verwijderen van de bestellingen:", error);
+  }
+}
 </script>
 
 <style scoped>
@@ -153,12 +197,12 @@ async function deleteOrder(orderId) {
 h1 {
   font-family: "Poppins", sans-serif;
   font-size: 2rem;
-  color: #333;
+  color: #ff69b4;
   margin-bottom: 2rem;
 }
 p {
   font-family: "Poppins", sans-serif;
-  color: black;
+  color: #ff69b4;
 }
 ul {
   list-style-type: none;
@@ -172,11 +216,13 @@ li {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
+  color: #ff69b4;
+  font-family: "Poppins", sans-serif;
 }
 
 .order-header {
   cursor: pointer;
-  background-color: #f9f9f9;
+  background-color: white;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -195,9 +241,9 @@ li {
 button {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
-  color: black;
-  background-color: white; /* Blauwe kleur */
-  border: 1px solid black; /* Lichte rand */
+  color: white;
+  background-color: #ff69b4; /* Blauwe kleur */
+  border: 1px solid #ff69b4; /* Lichte rand */
   border-radius: 5px;
   padding: 10px 20px;
   margin: 10px 0; /* Ruimte tussen de knoppen */
@@ -208,25 +254,35 @@ button {
 }
 /* Hover-effect voor de knoppen */
 button:hover {
-  background-color: black;
-  color: white; /* Donkerdere blauwe kleur bij hover */
+  background-color: white;
+  color: #ff69b4; /* Donkerdere blauwe kleur bij hover */
 }
 
 .delete-button {
-  background-color: #ff4d4d;
+  border: 1px solid #ff69b4;
+  background-color: #ff69b4;
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   cursor: pointer;
+  width: 300px;
 }
 
 .delete-button:hover {
-  background-color: #ff1a1a;
+  background-color: white;
+  color: #ff69b4;
+  border: 1px solid #ff69b4;
 }
 
+.button-container {
+  display: flex; /* Gebruik flexbox om de knoppen naast elkaar te plaatsen */
+  justify-content: space-between; /* Zorg ervoor dat de knoppen aan de uiteinden staan */
+  align-items: center; /* Zorg ervoor dat de knoppen verticaal gecentreerd zijn */
+  margin-bottom: 20px; /* Voeg wat ruimte onder de container toe */
+}
 .accordion-arrow {
   font-size: 18px;
-  color: #333;
+  color: #ff69b4;
 }
 </style>

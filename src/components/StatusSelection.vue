@@ -49,15 +49,16 @@ h1 {
   font-size: 2rem;
   color: #333;
   margin-bottom: 2rem;
+  color: #ff69b4; /* Blauwe kleur voor de titel */
 }
 
 /* Styling voor de knoppen */
 button {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
-  color: black;
-  background-color: white; /* Blauwe kleur */
-  border: 1px solid black; /* Lichte rand */
+  color: white;
+  background-color: #ff69b4; /* Blauwe kleur */
+  border: 1px solid #ff69b4; /* Lichte rand */
   border-radius: 5px;
   padding: 10px 20px;
   margin: 10px 0; /* Ruimte tussen de knoppen */
@@ -69,7 +70,7 @@ button {
 
 /* Hover-effect voor de knoppen */
 button:hover {
-  background-color: black;
-  color: white; /* Donkerdere blauwe kleur bij hover */
+  background-color: white;
+  color: #ff69b4; /* Donkerdere blauwe kleur bij hover */
 }
 </style>

@@ -157,7 +157,7 @@ body {
   font-family: "Poppins", sans-serif;
 }
 h1 {
-  color: black;
+  color: #ff69b4;
   font-family: "Poppins", sans-serif;
 }
 p {
@@ -172,10 +172,12 @@ li {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
+  color: #ff69b4;
+  font-family: "Poppins", sans-serif;
 }
 .order-header {
   cursor: pointer;
-  background-color: #f9f9f9;
+  background-color: white;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -198,9 +200,9 @@ li {
 .back-button {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
-  color: black;
-  background-color: white;
-  border: 1px solid black;
+  color: white;
+  background-color: #ff69b4;
+  border: 1px solid #ff69b4;
   border-radius: 5px;
   padding: 10px 20px;
   cursor: pointer;
@@ -210,9 +212,9 @@ li {
 .delete-button {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
-  color: black;
-  background-color: white;
-  border: 1px solid black;
+  color: white;
+  background-color: #ff69b4;
+  border: 1px solid #ff69b4;
   border-radius: 5px;
   padding: 10px 20px;
   cursor: pointer;
@@ -222,8 +224,8 @@ li {
 
 /* Hover-effect voor beide knoppen */
 button:hover {
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: #ff69b4;
 }
 button {
   font-family: "Poppins", sans-serif;
@@ -244,6 +246,6 @@ hr {
 }
 .accordion-arrow {
   font-size: 18px;
-  color: #333;
+  color: #ff69b4;
 }
 </style>

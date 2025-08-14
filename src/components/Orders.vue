@@ -49,7 +49,9 @@
           <!-- Prijs toevoegen -->
           <p><strong>Prijs:</strong> €{{ order.price }}</p>
           <button @click="markAsCancelled(order)">Annuleer</button>
-          <button @click="markAsShipped(order)">Verzonden</button>
+          <button @click="markAsShipped(order)" class="verzonden">
+            Verzonden
+          </button>
         </div>
       </li>
     </ul>
@@ -193,11 +195,12 @@ body {
   font-family: "Poppins", sans-serif;
 }
 h1 {
-  color: black;
+  color: #ff69b4;
   font-family: "Poppins", sans-serif;
 }
 p {
   font-family: "Poppins", sans-serif;
+  color: #ff69b4;
 }
 ul {
   list-style-type: none;
@@ -208,10 +211,12 @@ li {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
+  color: #ff69b4;
+  font-family: "Poppins", sans-serif;
 }
 .order-header {
   cursor: pointer;
-  background-color: #f9f9f9;
+  background-color: white;
   padding: 10px;
   display: flex;
   justify-content: space-between;
@@ -227,9 +232,9 @@ li {
 button {
   font-family: "Poppins", sans-serif;
   font-size: 1.2rem;
-  color: black;
-  background-color: white; /* Blauwe kleur */
-  border: 1px solid black; /* Lichte rand */
+  color: white;
+  background-color: #ff69b4; /* Blauwe kleur */
+  border: 1px solid #ff69b4; /* Lichte rand */
   border-radius: 5px;
   padding: 10px 20px;
   margin: 10px 0; /* Ruimte tussen de knoppen */
@@ -240,15 +245,19 @@ button {
 }
 /* Hover-effect voor de knoppen */
 button:hover {
-  background-color: black;
-  color: white; /* Donkerdere blauwe kleur bij hover */
+  background-color: white;
+  color: #ff69b4; /* Donkerdere blauwe kleur bij hover */
+}
+
+.verzonden {
+  margin-left: 10px;
 }
 hr {
   border: 1px solid #ccc;
 }
 .accordion-arrow {
   font-size: 18px;
-  color: #333;
+  color: #ff69b4;
 }
 </style>
 `
