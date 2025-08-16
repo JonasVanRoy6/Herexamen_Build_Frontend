@@ -111,7 +111,9 @@ function goBack() {
 // Ophalen van verzonden bestellingen bij het laden van de component
 onMounted(async () => {
   try {
-    const response = await fetch("http://localhost:5000/api/orders");
+    const response = await fetch(
+      "https://herexamen-build-backend-1.onrender.com/api/orders"
+    );
     if (!response.ok) throw new Error(`Status: ${response.status}`);
     const allOrders = await response.json();
     orders.value = allOrders.filter((order) => order.status === "shipped");
@@ -131,7 +133,7 @@ async function deleteAllShippedOrders() {
 
     for (const orderId of shippedOrderIds) {
       const response = await fetch(
-        `http://localhost:5000/api/orders/${orderId}`,
+        `https://herexamen-build-backend-1.onrender.com/api/orders/${orderId}`,
         {
           method: "DELETE",
         }

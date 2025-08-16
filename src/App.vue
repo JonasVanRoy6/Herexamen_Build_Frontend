@@ -45,7 +45,9 @@ onMounted(async () => {
 
   try {
     console.log("Ophalen van orders gestart");
-    const response = await fetch("http://localhost:5000/api/orders");
+    const response = await fetch(
+      "https://herexamen-build-backend-1.onrender.com/api/orders"
+    );
     if (!response.ok) throw new Error(`Status: ${response.status}`);
     orders.value = await response.json();
     console.log("Ophalen van orders voltooid:", orders.value);
@@ -112,13 +114,16 @@ function updateShippedOrders(order) {
   orders.value = orders.value.filter((o) => o._id !== order._id);
 
   // Stuur een API-aanroep om de database bij te werken
-  fetch("http://localhost:5000/api/orders/markAsShipped", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ orderId: order._id }),
-  })
+  fetch(
+    "https://herexamen-build-backend-1.onrender.com/api/orders/markAsShipped",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ orderId: order._id }),
+    }
+  )
     .then((response) => {
       if (!response.ok) {
         throw new Error(

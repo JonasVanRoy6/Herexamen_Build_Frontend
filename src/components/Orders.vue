@@ -121,7 +121,7 @@ function goBack() {
 async function markAsCancelled(order) {
   try {
     const response = await fetch(
-      "http://localhost:5000/api/orders/updateStatus",
+      "https://herexamen-build-backend-1.onrender.com/api/orders/updateStatus",
       {
         method: "POST",
         headers: {
@@ -148,7 +148,7 @@ async function markAsCancelled(order) {
 async function markAsShipped(order) {
   try {
     const response = await fetch(
-      "http://localhost:5000/api/orders/updateStatus",
+      "https://herexamen-build-backend-1.onrender.com/api/orders/updateStatus",
       {
         method: "POST",
         headers: {
@@ -175,7 +175,9 @@ async function markAsShipped(order) {
 onMounted(async () => {
   if (localStorage.getItem("loggedIn") === "true") {
     try {
-      const response = await fetch("http://localhost:5000/api/orders");
+      const response = await fetch(
+        "https://herexamen-build-backend-1.onrender.com/api/orders"
+      );
       if (!response.ok) throw new Error(`Status: ${response.status}`);
       orders.value = await response.json();
       console.log("Ophalen van orders:", orders.value); // Controleer de opgehaalde data

@@ -127,7 +127,7 @@ function goBack() {
 async function deleteOrder(orderId) {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/orders/${orderId}`,
+      `https://herexamen-build-backend-1.onrender.com/api/orders/${orderId}`,
       {
         method: "DELETE",
       }
@@ -158,7 +158,7 @@ async function deleteAllCancelledOrders() {
 
     for (const orderId of cancelledOrderIds) {
       const response = await fetch(
-        `http://localhost:5000/api/orders/${orderId}`,
+        `https://herexamen-build-backend-1.onrender.com/api/orders/${orderId}`,
         {
           method: "DELETE",
         }
